@@ -85,7 +85,7 @@ filter {
 
     ############ drawing a line for use "Maps UI" ##############################
     
-    if !([request_path]) and ( [source][location][lat] and [source][location][lon] and [destination][location][lat] and [destination][location][lon] ){
+    if !([request_path]) and ( [source][geo][location][lat] and [source][geo][location][lon] and [destination][geo][location][lat] and [destination][geo][location][lon] ){
         mutate {
             add_field => {
                 "[request_path]" => [ 
