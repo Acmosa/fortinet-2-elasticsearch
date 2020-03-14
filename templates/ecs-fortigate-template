@@ -1012,6 +1012,16 @@
                 }
               }
             },
+            "nat" : {
+              "properties" : {
+                "port" : {
+                  "type" : "long"
+                },
+                "ip" : {
+                  "type" : "ip"
+                }
+              }
+            },
             "port" : {
               "type" : "long"
             },
