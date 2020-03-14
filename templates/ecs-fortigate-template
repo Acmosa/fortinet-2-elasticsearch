@@ -603,11 +603,15 @@
                   "type": "long"
                 },
                 "ip": {
-                  "type": "text",
-                  "fields": {
-                    "keyword": {
-                      "type": "keyword",
-                      "ignore_above": 256
+                  "type": "ip"
+                },
+                "nat": {
+                  "properties": {
+                    "ip": {
+                      "type": "ip"
+                    },
+                    "port": {
+	              "type": "long"
                     }
                   }
                 },
@@ -888,13 +892,7 @@
           "type": "long"
         },
         "rcvddelta": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
+          "type": "long"
         },
         "rcvdpkt": {
           "type": "long"
@@ -1179,7 +1177,13 @@
           "type": "long"
         },
         "srcserver": {
-          "type": "float"
+          "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+           }
         },
         "subtype": {
           "type": "text",
