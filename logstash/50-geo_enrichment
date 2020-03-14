@@ -89,10 +89,10 @@ filter {
         mutate {
             add_field => {
                 "[request_path]" => [ 
-                    "%{[source][location][lon]}" , 
-                    "%{[source][location][lat]}" , 
-                    "%{[destination][location][lon]}" , 
-                    "%{[destination][location][lat]}" ] 
+                    "%{[source][geo][location][lon]}" , 
+                    "%{[source][geo][location][lat]}" , 
+                    "%{[destination][geo][location][lon]}" , 
+                    "%{[destination][geo][location][lat]}" ] 
             }
         }
     }
