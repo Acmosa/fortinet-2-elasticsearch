@@ -70,6 +70,16 @@ filter {
             target => "[source][geo]"
             fields => ["city_name", "continent_code", "country_code2", "country_name", "location", "region_code", "region_name"]
         }
+        mutate {
+            convert => {
+                "[source][geo][location][lat]" => "float"
+            }
+        }
+        mutate {
+            convert => {
+                "[source][geo][location][lon]" => "float"
+            }
+        }
     }
     
     if [dest_ip_geo_apply] {
@@ -78,6 +88,17 @@ filter {
             target => "[destination][geo]"
             fields => ["city_name", "continent_code", "country_code2", "country_name", "location", "region_code", "region_name"]
         }
+        mutate {
+            convert => {
+                "[destination][geo][location][lat]" => "float"
+            }
+        }
+        mutate {
+            convert => {
+                "[destination][geo][location][lon]" => "float"
+            }
+        }
+
     }
     
     # "source_nat_locality", "destination_nat_locality"
@@ -86,18 +107,20 @@ filter {
     ############ drawing a line for use "Maps UI" ##############################
     
     if !([request_path]) and ( [source][geo][location][lat] and [source][geo][location][lon] and [destination][geo][location][lat] and [destination][geo][location][lon] ){
-        mutate {
-            add_field => {
-                "[request_path]" => [ 
-                    "%{[source][geo][location][lon]}" , 
-                    "%{[source][geo][location][lat]}" , 
-                    "%{[destination][geo][location][lon]}" , 
-                    "%{[destination][geo][location][lat]}" ] 
-            }
+      mutate {
+        add_field => {
+          "[request_path][type]" => "linestring"
         }
+      }
+      ruby {
+        code =>
+           "slon = event.get('[source][geo][location][lon]');
+           slat = event.get('[source][geo][location][lat]');
+           dlon = event.get('[destination][geo][location][lon]');
+           dlat = event.get('[destination][geo][location][lat]');
+           event.set('[request_path][coordinates]', [[slon,slat],[dlon,dlat]])"
+      }
     }
-
-
 }
 output {
     pipeline {
